@@ -14,4 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('/users', 'UserController');
+Route::get('/users', 'UserController@index');
