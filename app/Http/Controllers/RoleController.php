@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Resources\RoleResource;
 use App\Role;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,7 @@ class RoleController extends Controller
    
     public function index()
     {
-        return Role::all();
+        return RoleResource::collection(Role::all());
     }
 
    
@@ -17,13 +18,22 @@ class RoleController extends Controller
     {
         $role = Role::create($request->only('name'));
 
-        return response($role, 201 );
+        if ($permissions = $request->input('permissions')) {
+            foreach ($permissions as $permission_id) {
+                \DB::table('role_permission')->insert([
+                    'role_id' => $role->id,
+                    'permission_id' => $permission_id,
+                ]);
+            }
+        }
+
+        return response(new RoleResource($role),201);
     }
 
    
     public function show($id)
     {
-        return Role::find($id);
+        return new RoleResource(Role::find($id));
     }
 
     
@@ -33,12 +43,25 @@ class RoleController extends Controller
 
         $role->update($request->only('name'));
 
-        return response($role, 202);
+        \DB::table('role_permission')->where('role_id', $role->id)->delete();
+
+        if ($permissions = $request->input('permissions')) {
+            foreach ($permissions as $permission_id) {
+                \DB::table('role_permission')->insert([
+                    'role_id' => $role->id,
+                    'permission_id' => $permission_id,
+                ]);
+            }
+        }
+
+        return response(new RoleResource($role), 202);
     }
 
     
     public function destroy($id)
     {
+        \DB::table('role_permission')->where('role_id', $id)->delete();
+
         Role::destroy($id);
 
         return response(null, 204);

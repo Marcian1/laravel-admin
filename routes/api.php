@@ -22,10 +22,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('/users', 'UserController');
     Route::apiResource('products', 'ProductController');
     Route::apiResource('orders', 'OrderController')->only('index', 'show');
+    Route::apiResource('permissions', 'PermissionController')->only('index');
 
 
-
-    
+    Route::get('export', 'OrderController@export');
     Route::post('upload', 'ImageController@upload');
     
 
