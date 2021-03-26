@@ -12,18 +12,25 @@ use App\Http\Resources\UserResource;
 class UserController extends Controller
 {
   public function index() {
+     \Gate::authorize('view', "users");
+
       $users = User::with('role')->paginate();
       
       return UserResource::collection($users);
   }
 
   public function show($id) {
+    \Gate::authorize('view', "users");
+
     $user = User::with('role')->find($id);
 
     return new UserResource($user);
   }
 
   public function store(UserCreateRequest $request) {
+    \Gate::authorize('edit', "users");
+
+
     $user = User::create(
       $request->only('first_name', 'last_name', 'email', 'role_id')
       + ['password' => Hash::make(1234)]
@@ -33,6 +40,9 @@ class UserController extends Controller
   }
 
   public function update(UserUpdateRequest $request,$id) {
+    \Gate::authorize('edit', "users");
+
+    
     $user = User::find($id);
     
     $user->update($request->only('first_name', 'last_name', 'email', 'role_id'));
