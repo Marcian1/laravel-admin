@@ -7,31 +7,37 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
+
+use App\Http\Resources\UserResource;
 class UserController extends Controller
 {
   public function index() {
-      return User::paginate();
+      $users = User::with('role')->paginate();
+      
+      return UserResource::collection($users);
   }
 
   public function show($id) {
-    return User::find($id);
+    $user = User::with('role')->find($id);
+
+    return new UserResource($user);
   }
 
   public function store(UserCreateRequest $request) {
     $user = User::create(
-      $request->only('first_name', 'last_name', 'email')
+      $request->only('first_name', 'last_name', 'email', 'role_id')
       + ['password' => Hash::make(1234)]
       );
 
-    return response($user, 201);
+    return response(new UserResource($user), 201);
   }
 
   public function update(UserUpdateRequest $request,$id) {
     $user = User::find($id);
     
-    $user->update($request->only('first_name', 'last_name', 'email'));
+    $user->update($request->only('first_name', 'last_name', 'email', 'role_id'));
 
-    return response($user,202);
+    return response(new UserResource($user),202);
 
   }
   public function destroy($id) {
@@ -39,4 +45,33 @@ class UserController extends Controller
 
     return response(null,204);
   }
+
+
+    public function user()
+    {
+        return new UserResource(\Auth::user());
+
+    }
+
+
+    public function updateInfo(UpdateInfoRequest $request)
+    {
+        $user = \Auth::user();
+
+        $user->update($request->only('first_name', 'last_name', 'email'));
+
+        return response(new UserResource($user), 201);
+    }
+
+ 
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        $user = \Auth::user();
+
+        $user->update([
+            'password' => Hash::make($request->input('password')),
+        ]);
+
+        return response(new UserResource($user), 201);
+    }
 }
