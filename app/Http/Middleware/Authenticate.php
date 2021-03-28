@@ -18,13 +18,19 @@ class Authenticate extends Middleware
             return route('login');
         }
     }
-
-    public function handle($request, Closure $next, ...$guards){
+    /*
+    @param \Illuminate\Http\Request $request
+    @param \Closure $next
+    @param string[] ...$guards
+    */
+    public function handle($request, $next,...$guards){
+        
         if($jwt = $request->cookie('jwt')) {
-            $request->headers->set('Authorization', 'Bearer' . $jwt);
+            $request->headers->set('Authorization', 'Bearer ' . $jwt);
         }
         
         $this->authenticate($request, $guards);
+        
         return $next($request);
     }
 }
