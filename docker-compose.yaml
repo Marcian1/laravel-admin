@@ -16,7 +16,7 @@ services:
       dockerfile: Dockerfile
     environment:
       DB_HOST: db
-      DB_DATABASE: admin
+      DB_DATABASE: admin1
       DB_USERNAME: root
       DB_PASSWORD: root
     ports:
@@ -33,7 +33,7 @@ services:
     image: mysql:5.7.22
     restart: always
     environment:
-      MYSQL_DATABASE: admin
+      MYSQL_DATABASE: admin1
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root
