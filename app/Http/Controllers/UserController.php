@@ -44,7 +44,9 @@ class UserController extends Controller
 
     
     $user = User::find($id);
-    
+
+
+    /*If you need to retrieve a subset of the input data, you may use the only method*/ 
     $user->update($request->only('first_name', 'last_name', 'email', 'role_id'));
 
     return response(new UserResource($user),202);
