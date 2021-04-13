@@ -17,6 +17,10 @@ class Order extends Model
             return $item->price * $item->quantity;
         });
     }
+
+    /*An accessor transforms an Eloquent attribute value when it is accessed.
+     To define an accessor, create a get{Attribute}Attribute method on your model where 
+    {Attribute} is the "studly" cased name of the column you wish to access. */
     public function getNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;

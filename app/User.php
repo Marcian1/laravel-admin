@@ -10,7 +10,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
     protected $guarded = ['id'];
-
+    
     protected $hidden = [
         'password',
     ];
@@ -23,6 +23,7 @@ class User extends Authenticatable
 
     public function permissions()
     {
+        /* pluck return an array only with name attributes in this case */
         return $this->role->permissions->pluck('name');
     }
 

@@ -35,11 +35,12 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
+        \Gate::authorize('edit', 'products');
 
         $product = Product::find($id);
 
         $product->update($request->only('title', 'description', 'image', 'price'));
-        
+
         return response($product, 202);
     }
     public function destroy($id)

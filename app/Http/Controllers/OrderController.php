@@ -50,6 +50,13 @@ class OrderController extends Controller
             fclose($file);
         };
 
+
+
+        /*HTTP Streaming is a push-style data transfer technique that allows a web server
+         to continuously send data to a client over a single HTTP connection that remains 
+         open indefinitely. Technically, this goes against HTTP convention, but HTTP Streaming 
+         is an efficient method to transfer all kinds of 
+        or otherwise streamable data between the server and client without reinventing HTTP.*/
         return \Response::stream($callback, 200, $headers);
     }
 }
