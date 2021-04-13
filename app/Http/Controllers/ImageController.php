@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ImageUploadRequest;
 use Illuminate\Support\Str;
 class ImageController extends Controller
-{
+{   
+    /*if a user updates a product title, we don t want to upload the same image 
+    as a new image. That s why we separate it in external controller*/
     public function upload(ImageUploadRequest $request)
     {
         $file = $request->file('image');

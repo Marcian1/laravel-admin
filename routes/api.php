@@ -17,20 +17,22 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
 
+/*Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application. 
+For example, Laravel includes a middleware that verifies the user of your application 
+is authenticated. If the user is not authenticated, the middleware will redirect the 
+user to your application's login screen. However, if the user is authenticated, the 
+middleware will allow the request to proceed further into the application.*/
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::apiResource('roles', 'RoleController');
-    Route::apiResource('/users', 'UserController');
-    Route::apiResource('products', 'ProductController');
-    Route::apiResource('orders', 'OrderController')->only('index', 'show');
-    Route::apiResource('permissions', 'PermissionController')->only('index');
-
-
-    Route::get('export', 'OrderController@export');
-    Route::post('upload', 'ImageController@upload');
     Route::get('chart', 'DashboardController@chart');
-    Route::post('logout', 'AuthController@login');
-
     Route::get('user', 'UserController@user');
     Route::put('users/info', 'UserController@updateInfo');
     Route::put('users/password', 'UserController@updatePassword');
+    Route::post('upload', 'ImageController@upload');
+    Route::get('export', 'OrderController@export');
+
+    Route::apiResource('users', 'UserController');
+    Route::apiResource('roles', 'RoleController');
+    Route::apiResource('products', 'ProductController');
+    Route::apiResource('orders', 'OrderController')->only('index', 'show');
+    Route::apiResource('permissions', 'PermissionController')->only('index');
 });

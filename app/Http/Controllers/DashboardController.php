@@ -9,6 +9,9 @@ class DashboardController extends Controller
 {
     public function chart()
     {
+        /*Gates are simply closures that determine if a user is authorized to perform a given action. 
+        Typically, gates are defined within the boot method of the
+         App\Providers\AuthServiceProvider class using the Gate facade.  */
         \Gate::authorize('view', 'orders');
         
         $orders = Order::query()
