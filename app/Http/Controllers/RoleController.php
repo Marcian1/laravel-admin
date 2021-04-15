@@ -72,8 +72,8 @@ class RoleController extends Controller
         
         \DB::table('role_permission')->where('role_id', $id)->delete();
 
-        Role::destroy($id);
+        $role = Role::destroy($id);
 
-        return response(null, 204);
+        return response(new RoleResource($role), 204);
     }
 }

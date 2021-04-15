@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
+Route::post('logout', 'AuthController@logout');
 
 /*Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application. 
 For example, Laravel includes a middleware that verifies the user of your application 
