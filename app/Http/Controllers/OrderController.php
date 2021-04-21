@@ -35,7 +35,7 @@ class OrderController extends Controller
             $orders = Order::all();
             $file = fopen('php://output', 'w');
 
-            //Header Row
+            //Header Rowws
             fputcsv($file, ['ID', 'Name', 'Email', 'Order Title', 'Price', 'Quantity']);
 
             //Body
